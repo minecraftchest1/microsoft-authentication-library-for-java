@@ -49,6 +49,8 @@ public class SeleniumExtensions {
         ChromeOptions options = new ChromeOptions();
         //no visual rendering, remove when debugging
         options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1280,800");
 
         // sets location where chromedriver.exe is installed
         String chromeDriverPath = System.getenv("ChromeWebDriver");
