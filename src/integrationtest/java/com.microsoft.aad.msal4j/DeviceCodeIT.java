@@ -18,11 +18,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.util.Strings;
-import sun.rmi.runtime.Log;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Test
@@ -78,6 +77,10 @@ public class DeviceCodeIT {
             SeleniumExtensions.performLogin(seleniumDriver, user);
         } catch(Exception e){
             String file = System.getenv("ArtifactStagingDirectory");
+            Map<String, String> envVar = System.getenv();
+            for (Map.Entry<String, String> entry: envVar.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
             LOG.info("Environment variable....." +  file);
             File scrFile = ((TakesScreenshot)seleniumDriver).getScreenshotAs(OutputType.FILE);
             File destination = new File(file + "SeleniumError.png");
