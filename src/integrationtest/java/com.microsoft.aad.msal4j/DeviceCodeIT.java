@@ -77,15 +77,13 @@ public class DeviceCodeIT {
             SeleniumExtensions.performLogin(seleniumDriver, user);
         } catch(Exception e){
             String file = System.getenv("BUILD_STAGINGDIRECTORY");
-            Map<String, String> envVar = System.getenv();
-            for (Map.Entry<String, String> entry: envVar.entrySet()) {
-                System.out.println(entry.getKey() + ": " + entry.getValue());
-            }
             LOG.info("Environment variable....." +  file);
             File scrFile = ((TakesScreenshot)seleniumDriver).getScreenshotAs(OutputType.FILE);
             File destination = new File(file + "SeleniumError.png");
             try {
+                LOG.info("copying file");
                 FileUtils.copyFile(scrFile, destination);
+                LOG.info("File copied");
             } catch(Exception exception){
                 LOG.error(exception.getMessage());
             }
