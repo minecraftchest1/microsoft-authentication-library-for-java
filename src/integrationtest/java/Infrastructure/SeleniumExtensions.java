@@ -103,5 +103,7 @@ public class SeleniumExtensions {
         LOG.info("Loggin in ... click submit");
         waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
                 click();
+
+        LOG.info("Loggin in ... done with interactive login");
     }
 }

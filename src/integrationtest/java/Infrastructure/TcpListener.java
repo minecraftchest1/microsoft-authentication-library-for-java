@@ -30,17 +30,20 @@ public class TcpListener implements AutoCloseable{
         Runnable serverTask = () -> {
             try(ServerSocket serverSocket = new ServerSocket(0)) {
                 port = serverSocket.getLocalPort();
+                LOG.info("... Listening on port: " + port);
                 tcpStartUpNotificationQueue.put(Boolean.TRUE);
                 LOG.info("... TCP listener started");
                 Socket clientSocket = serverSocket.accept();
+                LOG.info("... server socket accepted");
                 new ClientTask(clientSocket).run();
             } catch (Exception e) {
                 LOG.error("Unable to process client request: " + e.getMessage());
                 throw new RuntimeException("Unable to process client request: " + e.getMessage());
             }
         };
-
+        LOG.info("... Creating new thread");
         serverThread = new Thread(serverTask);
+        LOG.info("... starting new thread");
         serverThread.start();
     }
 
