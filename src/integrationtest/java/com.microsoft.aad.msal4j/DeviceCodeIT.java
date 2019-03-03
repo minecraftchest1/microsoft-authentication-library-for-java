@@ -5,7 +5,10 @@ import lapapi.LabResponse;
 import lapapi.LabUser;
 import lapapi.LabUserProvider;
 import lapapi.NationalCloud;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -15,7 +18,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.util.Strings;
+import sun.rmi.runtime.Log;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.function.Consumer;
 
@@ -71,6 +77,17 @@ public class DeviceCodeIT {
 
             SeleniumExtensions.performLogin(seleniumDriver, user);
         } catch(Exception e){
+            //String file = System.getenv("Build.ArtifactStagingDirectory");
+            //String file2 = System.getenv("ArtifactsDirectory");
+            //System.out.println(file);
+            //System.out.println(file2);
+            File scrFile = ((TakesScreenshot)seleniumDriver).getScreenshotAs(OutputType.FILE);
+            //File destination = new File(file);
+            try {
+                FileUtils.copyFile(scrFile, new File("C:/Java/SeleniumError.png"));
+            } catch(Exception exception){
+                LOG.error(exception.getMessage());
+            }
             LOG.error("Browser automation failed: " + e.getMessage());
             throw new RuntimeException("Browser automation failed: " + e.getMessage());
         }
