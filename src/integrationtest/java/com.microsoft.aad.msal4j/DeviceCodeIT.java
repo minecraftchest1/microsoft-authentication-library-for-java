@@ -76,7 +76,7 @@ public class DeviceCodeIT {
 
             SeleniumExtensions.performLogin(seleniumDriver, user);
         } catch(Exception e){
-            String file = System.getenv("ArtifactStagingDirectory");
+            String file = System.getenv("BUILD_STAGINGDIRECTORY");
             Map<String, String> envVar = System.getenv();
             for (Map.Entry<String, String> entry: envVar.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
