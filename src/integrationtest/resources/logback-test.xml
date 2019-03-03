@@ -7,7 +7,7 @@
         </layout>
     </appender>
 
-    <logger name="com.base22" level="ALL"/>
+    <logger name="integration-tests" level="ALL"/>
 
 
     <root level="debug">
