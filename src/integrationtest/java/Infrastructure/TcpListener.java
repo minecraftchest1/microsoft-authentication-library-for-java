@@ -31,6 +31,7 @@ public class TcpListener implements AutoCloseable{
             try(ServerSocket serverSocket = new ServerSocket(0)) {
                 port = serverSocket.getLocalPort();
                 tcpStartUpNotificationQueue.put(Boolean.TRUE);
+                LOG.info("... TCP listener started");
                 Socket clientSocket = serverSocket.accept();
                 new ClientTask(clientSocket).run();
             } catch (Exception e) {
@@ -52,10 +53,13 @@ public class TcpListener implements AutoCloseable{
 
         @Override
         public void run(){
+            LOG.info("... Running Client Task");
             StringBuilder builder = new StringBuilder();
             try(BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()))) {
+                LOG.info("... Reading from client socket");
                 String line = in.readLine();
+                LOG.info("... First line" + line);
                 while(!line.equals("")){
                     builder.append(line);
                     line = in.readLine();
@@ -66,6 +70,7 @@ public class TcpListener implements AutoCloseable{
                 throw new RuntimeException("Error reading response from socket: " + e.getMessage());
             } finally {
                 try {
+                    LOG.info("... Closing client socket");
                     clientSocket.close();
                 } catch (IOException e) {
                     LOG.error("Error closing socket: " + e.getMessage());
