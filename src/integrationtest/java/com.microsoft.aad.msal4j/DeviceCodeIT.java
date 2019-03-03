@@ -77,14 +77,14 @@ public class DeviceCodeIT {
 
             SeleniumExtensions.performLogin(seleniumDriver, user);
         } catch(Exception e){
-            //String file = System.getenv("Build.ArtifactStagingDirectory");
-            //String file2 = System.getenv("ArtifactsDirectory");
-            //System.out.println(file);
-            //System.out.println(file2);
+            String file = System.getenv("Build.ArtifactStagingDirectory");
+            String file2 = System.getenv("ArtifactStagingDirectory");
+            LOG.info("Environment variable....." +  file);
+            LOG.info("Environment variable....." +  file2);
             File scrFile = ((TakesScreenshot)seleniumDriver).getScreenshotAs(OutputType.FILE);
-            //File destination = new File(file);
+            File destination = new File(file + "SeleniumError.png");
             try {
-                FileUtils.copyFile(scrFile, new File("C:/Java/SeleniumError.png"));
+                FileUtils.copyFile(scrFile, destination);
             } catch(Exception exception){
                 LOG.error(exception.getMessage());
             }
