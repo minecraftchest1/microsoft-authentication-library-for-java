@@ -79,11 +79,11 @@ public class DeviceCodeIT {
             String file = System.getenv("BUILD_STAGINGDIRECTORY");
             LOG.info("Environment variable....." +  file);
             File scrFile = ((TakesScreenshot)seleniumDriver).getScreenshotAs(OutputType.FILE);
-            File destination = new File(file + "SeleniumError.png");
+            File destination = new File(file + "" + "/SeleniumError.png");
             try {
-                LOG.info("copying file");
+                LOG.info("copying file from " + scrFile.toPath());
                 FileUtils.copyFile(scrFile, destination);
-                LOG.info("File copied");
+                LOG.info("File copied: " + destination.getPath());
             } catch(Exception exception){
                 LOG.error(exception.getMessage());
             }
