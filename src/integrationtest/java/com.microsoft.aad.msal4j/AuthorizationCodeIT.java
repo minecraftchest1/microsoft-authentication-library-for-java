@@ -194,15 +194,16 @@ public class AuthorizationCodeIT {
     private String acquireAuthorizationCodeAutomated(LabResponse labUserData){
         BlockingQueue<Boolean> tcpStartUpNotificationQueue = new LinkedBlockingQueue<>();
         startTcpListener(tcpStartUpNotificationQueue);
-
         String authServerResponse;
         try {
             Boolean tcpListenerStarted = tcpStartUpNotificationQueue.poll(
                     30,
                     TimeUnit.SECONDS);
+            LOG.info("TCP listener started: " + tcpListenerStarted);
             if (tcpListenerStarted == null || !tcpListenerStarted){
                 throw new RuntimeException("Could not start TCP listener");
             }
+            LOG.info("TCP listener started: " + tcpListenerStarted);
             runSeleniumAutomatedLogin(labUserData);
             authServerResponse = getResponseFromTcpListener();
 
@@ -216,6 +217,7 @@ public class AuthorizationCodeIT {
     private void runSeleniumAutomatedLogin(LabResponse labUserData) throws
             UnsupportedEncodingException{
         String url = buildAuthenticationCodeURL(labUserData.getAppId());
+        LOG.info("Navigating to URL: " + url);
         seleniumDriver.navigate().to(url);
         SeleniumExtensions.performLogin(seleniumDriver, labUserData.getUser());
     }
@@ -223,6 +225,7 @@ public class AuthorizationCodeIT {
     private void startTcpListener(BlockingQueue<Boolean> tcpStartUpNotifierQueue){
         AuthorizationCodeQueue = new LinkedBlockingQueue<>();
         tcpListener = new TcpListener(AuthorizationCodeQueue, tcpStartUpNotifierQueue);
+        LOG.info("Started new TCP Listener");
         tcpListener.startServer();
     }
 
