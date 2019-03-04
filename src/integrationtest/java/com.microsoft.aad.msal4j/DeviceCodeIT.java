@@ -67,11 +67,11 @@ public class DeviceCodeIT {
 
             LOG.info("Loggin in ... Entering device code");
             seleniumDriver.navigate().to(deviceCode.getVerificationUrl());
-            seleniumDriver.findElement(new By.ById("otc")).sendKeys(deviceCode.getUserCode());
+            seleniumDriver.findElement(new By.ById("code")).sendKeys(deviceCode.getUserCode());
             LOG.info("Loggin in ... click continue");
             WebElement continueBtn = SeleniumExtensions.waitForElementToBeVisibleAndEnable(
                    seleniumDriver,
-                   new By.ById("idSIButton9"));
+                   new By.ById("continueBtn"));
             continueBtn.click();
 
             SeleniumExtensions.performLogin(seleniumDriver, user);
