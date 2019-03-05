@@ -40,6 +40,13 @@ import org.slf4j.LoggerFactory;
 import org.testng.util.Strings;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SeleniumExtensions {
@@ -52,7 +59,7 @@ public class SeleniumExtensions {
 
         ChromeOptions options = new ChromeOptions();
         //no visual rendering, remove when debugging
-        options.addArguments("--headless");
+        // options.addArguments("--headless");
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1280,800");
 
@@ -122,6 +129,15 @@ public class SeleniumExtensions {
         waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
                 click();
 
+
+        String pageSource = driver.getPageSource();
+        List<String> lines = Arrays.asList(pageSource);
+        Path textFile = Paths.get(file +"/Text.txt");
+        try {
+            Files.write(textFile, lines, Charset.forName("UTF-8"));
+        } catch(Exception e){
+            LOG.error(e.getMessage());
+        }
 
         File destination2 = new File(file + "" + "/SeleniumError2.png");
         try {
