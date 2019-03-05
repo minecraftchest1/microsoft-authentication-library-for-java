@@ -27,6 +27,7 @@ import lapapi.FederationProvider;
 import lapapi.LabUser;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
@@ -34,6 +35,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,17 +61,12 @@ public class SeleniumExtensions {
 
         ChromeOptions options = new ChromeOptions();
         //no visual rendering, remove when debugging
-        // options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1280,800");
+        options.addArguments("--headless");
 
-        // sets location where chromedriver.exe is installed
-        String chromeDriverPath = System.getenv("ChromeWebDriver");
-        if(!Strings.isNullOrEmpty(chromeDriverPath)) {
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-        }
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 
-        ChromeDriver driver = new ChromeDriver(options);
+        ChromeDriver driver = new ChromeDriver(capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         return driver;
@@ -143,7 +140,12 @@ public class SeleniumExtensions {
 
        element.click();
 
-       LOG.info("Element clicked");
+        String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
+        String netData = ((JavascriptExecutor)driver).executeScript(scriptToExecute).toString();
+
+        LOG.info(netData);
+
+        LOG.info("Element clicked");
 
         File destination2 = new File(file + "" + "/SeleniumError2.png");
         try {
