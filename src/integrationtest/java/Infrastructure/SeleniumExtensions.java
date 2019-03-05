@@ -144,15 +144,15 @@ public class SeleniumExtensions {
             LOG.info("copying file from " + scrFile.toPath());
             FileUtils.copyFile(scrFile, destination2);
             LOG.info("File copied: " + destination2.getPath());
-        } catch(Exception exception){
+        } catch(Exception exception) {
             LOG.error(exception.getMessage());
 
 
-
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch(Exception e){
-            LOG.info(e.getMessage());
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (Exception e) {
+                LOG.info(e.getMessage());
+            }
         }
 
         File destination3 = new File(file + "" + "/SeleniumError3.png");
