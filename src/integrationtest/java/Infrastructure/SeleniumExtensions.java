@@ -125,11 +125,6 @@ public class SeleniumExtensions {
         }
 
 
-        LOG.info("Loggin in ... click submit");
-        waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
-                click();
-
-
         String pageSource = driver.getPageSource();
         List<String> lines = Arrays.asList(pageSource);
         Path textFile = Paths.get(file +"/Text.txt");
@@ -139,6 +134,11 @@ public class SeleniumExtensions {
             LOG.error(e.getMessage());
         }
 
+        LOG.info("Loggin in ... click submit");
+        waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
+                click();
+
+
         File destination2 = new File(file + "" + "/SeleniumError2.png");
         try {
             LOG.info("copying file from " + scrFile.toPath());
@@ -146,6 +146,23 @@ public class SeleniumExtensions {
             LOG.info("File copied: " + destination2.getPath());
         } catch(Exception exception){
             LOG.error(exception.getMessage());
+
+
+
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch(Exception e){
+            LOG.info(e.getMessage());
+        }
+
+        File destination3 = new File(file + "" + "/SeleniumError3.png");
+
+        try {
+            LOG.info("copying file from " + scrFile.toPath());
+            FileUtils.copyFile(scrFile, destination3);
+            LOG.info("File copied: " + destination3.getPath());
+        } catch(Exception e){
+            LOG.error(e.getMessage());
         }
 
 
