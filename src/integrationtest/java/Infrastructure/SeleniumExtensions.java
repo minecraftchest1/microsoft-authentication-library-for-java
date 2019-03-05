@@ -28,6 +28,7 @@ import lapapi.LabUser;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
@@ -68,7 +69,6 @@ public class SeleniumExtensions {
 
         ChromeDriver driver = new ChromeDriver(capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
         return driver;
     }
 
@@ -135,10 +135,10 @@ public class SeleniumExtensions {
         Boolean isPresent = driver.findElements(new By.ById(fields.getPasswordSigInButtonId())).size() > 0;
         LOG.info("Loggin in ... " + fields.getPasswordSigInButtonId() + "is present: " + isPresent );
 
-       WebElement element =  waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId()));
+       waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).sendKeys(Keys.ENTER);
        LOG.info("Element created");
 
-       element.click();
+       //element.click();
 
         String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
         String netData = ((JavascriptExecutor)driver).executeScript(scriptToExecute).toString();
