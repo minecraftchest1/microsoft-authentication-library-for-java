@@ -137,10 +137,13 @@ public class SeleniumExtensions {
         LOG.info("Loggin in ... click submit");
         Boolean isPresent = driver.findElements(new By.ById(fields.getPasswordSigInButtonId())).size() > 0;
         LOG.info("Loggin in ... " + fields.getPasswordSigInButtonId() + "is present: " + isPresent );
-        
-        waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
-                click();
 
+       WebElement element =  waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId()));
+       LOG.info("Element created");
+
+       element.click();
+
+       LOG.info("Element clicked");
 
         File destination2 = new File(file + "" + "/SeleniumError2.png");
         try {
