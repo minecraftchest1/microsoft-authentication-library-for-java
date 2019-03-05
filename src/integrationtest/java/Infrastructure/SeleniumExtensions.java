@@ -62,7 +62,7 @@ public class SeleniumExtensions {
 
         ChromeOptions options = new ChromeOptions();
         //no visual rendering, remove when debugging
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
 
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
@@ -135,8 +135,10 @@ public class SeleniumExtensions {
         Boolean isPresent = driver.findElements(new By.ById(fields.getPasswordSigInButtonId())).size() > 0;
         LOG.info("Loggin in ... " + fields.getPasswordSigInButtonId() + "is present: " + isPresent );
 
-       waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).sendKeys(Keys.ENTER);
+       WebElement element = waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId()));
        LOG.info("Element created");
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", element);
 
        //element.click();
 
