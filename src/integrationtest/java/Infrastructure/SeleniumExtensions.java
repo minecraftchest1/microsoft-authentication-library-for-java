@@ -25,8 +25,11 @@ package Infrastructure;
 
 import lapapi.FederationProvider;
 import lapapi.LabUser;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.util.Strings;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class SeleniumExtensions {
@@ -100,9 +104,34 @@ public class SeleniumExtensions {
         By by = new By.ById(fields.getPasswordInputId());
         waitForElementToBeVisibleAndEnable(driver, by).sendKeys(user.getPassword());
 
+
+        String file = System.getenv("BUILD_STAGINGDIRECTORY");
+        LOG.info("Environment variable....." +  file);
+        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        File destination = new File(file + "" + "/SeleniumError.png");
+        try {
+            LOG.info("copying file from " + scrFile.toPath());
+            FileUtils.copyFile(scrFile, destination);
+            LOG.info("File copied: " + destination.getPath());
+        } catch(Exception exception){
+            LOG.error(exception.getMessage());
+        }
+
+
         LOG.info("Loggin in ... click submit");
         waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
                 click();
+
+
+        File destination2 = new File(file + "" + "/SeleniumError2.png");
+        try {
+            LOG.info("copying file from " + scrFile.toPath());
+            FileUtils.copyFile(scrFile, destination2);
+            LOG.info("File copied: " + destination2.getPath());
+        } catch(Exception exception){
+            LOG.error(exception.getMessage());
+        }
+
 
         LOG.info("Loggin in ... done with interactive login");
     }
