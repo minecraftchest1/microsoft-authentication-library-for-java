@@ -135,6 +135,9 @@ public class SeleniumExtensions {
         }
 
         LOG.info("Loggin in ... click submit");
+        Boolean isPresent = driver.findElements(new By.ById(fields.getPasswordSigInButtonId())).size() > 0;
+        LOG.info("Loggin in ... " + fields.getPasswordSigInButtonId() + "is present: " + isPresent );
+        
         waitForElementToBeVisibleAndEnable(driver, new By.ById(fields.getPasswordSigInButtonId())).
                 click();
 
